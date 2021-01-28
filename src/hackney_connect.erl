@@ -178,15 +178,8 @@ close(Ref) when is_reference(Ref) ->
 
 %% @doc get current pool pid or name used by a client if needed
 is_pool(#client{options=Opts}) ->
-  UseDefaultPool = use_default_pool(),
-  case proplists:get_value(pool, Opts) of
-    false ->
-      false;
-    undefined when UseDefaultPool =:= false ->
-      false;
-    _ ->
-      true
-  end.
+  io:fwrite("DEBUG: is it pool? NO."),
+  false.
 
 reconnect(Host, Port, Transport, State) ->
   %% if we use a pool then checkout the connection from the pool, else
