@@ -178,7 +178,7 @@ close(Ref) when is_reference(Ref) ->
 
 %% @doc get current pool pid or name used by a client if needed
 is_pool(#client{options=Opts}) ->
-  io:fwrite("DEBUG: is it pool? NO."),
+  io:fwrite("DEBUG: is it pool? NO.~n"),
   false.
 
 reconnect(Host, Port, Transport, State) ->
@@ -197,7 +197,7 @@ reconnect(Host, Port, Transport, State) ->
 %%
 
 socket_from_pool(Host, Port, Transport, Client0) ->
-  io:fwrite("HACKNEY: socket_from_pool"),
+  io:fwrite("HACKNEY: socket_from_pool~n"),
   PoolHandler = hackney_app:get_app_env(pool_handler, hackney_pool),
   PoolName = proplists:get_value(pool, Client0#client.options, default),
   Metrics = Client0#client.mod_metrics,
@@ -231,7 +231,7 @@ socket_from_pool(Host, Port, Transport, Client0) ->
   end.
 
 do_connect(Host, Port, Transport, Client) ->
-  io:fwrite("HACKNEY: direct connection"),
+  io:fwrite("HACKNEY: direct connection~n"),
   do_connect(Host, Port, Transport, Client, direct).
 
 
@@ -241,7 +241,6 @@ connect_timeout(#client{options=Opts}) ->
 
 do_connect(Host, Port, Transport, #client{mod_metrics=Metrics,
                                           options=ClientOptions}=Client0, Type) ->
-  io:fwrite(client),
   Begin = os:timestamp(),
   {_RequestRef, Client} = case Type of
                             pool ->
@@ -252,6 +251,10 @@ do_connect(Host, Port, Transport, #client{mod_metrics=Metrics,
 
   ConnectTimeout = connect_timeout(Client),
   ConnectOpts = hackney_connection:connect_options(Transport, Host, ClientOptions),
+
+  io:fwrite("OPTIONS:"),
+  io:fwrite(ConnectOpts),
+  io:fwrite("~n"),
 
   case Transport:connect(Host, Port, ConnectOpts, ConnectTimeout) of
     {ok, Skt} ->
