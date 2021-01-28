@@ -197,6 +197,7 @@ reconnect(Host, Port, Transport, State) ->
 %%
 
 socket_from_pool(Host, Port, Transport, Client0) ->
+  io:fwrite("HACKNEY: socket_from_pool"),
   PoolHandler = hackney_app:get_app_env(pool_handler, hackney_pool),
   PoolName = proplists:get_value(pool, Client0#client.options, default),
   Metrics = Client0#client.mod_metrics,
@@ -230,6 +231,7 @@ socket_from_pool(Host, Port, Transport, Client0) ->
   end.
 
 do_connect(Host, Port, Transport, Client) ->
+  io:fwrite("HACKNEY: direct connection"),
   do_connect(Host, Port, Transport, Client, direct).
 
 
@@ -239,6 +241,7 @@ connect_timeout(#client{options=Opts}) ->
 
 do_connect(Host, Port, Transport, #client{mod_metrics=Metrics,
                                           options=ClientOptions}=Client0, Type) ->
+  io:fwrite(client),
   Begin = os:timestamp(),
   {_RequestRef, Client} = case Type of
                             pool ->
