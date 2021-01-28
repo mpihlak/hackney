@@ -252,9 +252,7 @@ do_connect(Host, Port, Transport, #client{mod_metrics=Metrics,
   ConnectTimeout = connect_timeout(Client),
   ConnectOpts = hackney_connection:connect_options(Transport, Host, ClientOptions),
 
-  io:fwrite("OPTIONS:"),
-  io:fwrite(ConnectOpts),
-  io:fwrite("~n"),
+  io:fwrite("Going for Transport:connect.~n"),
 
   case Transport:connect(Host, Port, ConnectOpts, ConnectTimeout) of
     {ok, Skt} ->
